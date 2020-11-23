@@ -32,7 +32,6 @@ galleryRef.append(...tegsGalleryArr)
 
 galleryRef.addEventListener('click', onOpenModal)
 lightboxButtonRef.addEventListener('click', onCloseModal)
-window.addEventListener('keydown', onCloseModal)
 lightboxOverlayRef.addEventListener('click', onCloseModal)
 
 function onOpenModal(event) {
@@ -41,6 +40,8 @@ function onOpenModal(event) {
     if (image.nodeName !== 'IMG') {
         return
     }
+
+    window.addEventListener('keydown', onCloceModalESC)
     event.preventDefault();
     lightboxRef.classList.add('is-open')
 
@@ -51,4 +52,11 @@ function onCloseModal() {
     lightboxImageRef.setAttribute('alt', '');
     lightboxImageRef.setAttribute('src', '');
     lightboxRef.classList.remove('is-open')
+    window.removeEventListener('keydown', onCloceModalESC)
+}
+
+function onCloceModalESC(event) {
+    if (event.code === 'Escape') {
+        onCloseModal();
+    }
 }
