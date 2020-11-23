@@ -2,13 +2,12 @@ import gallery from './gallery-items.js';
 
 const galleryRef = document.querySelector('.gallery');
 const lightboxOverlayRef = document.querySelector('.lightbox__overlay');
-const lightboxContentRef = document.querySelector('.lightbox__content');
 const lightboxImageRef = document.querySelector('.lightbox__image');
 const lightboxButtonRef = document.querySelector('.lightbox__button');
-const imageRef = document.querySelector('.gallery__item');
 const lightboxRef = document.querySelector('.lightbox');
+let IMGindex;
 
-const tegsGalleryArr = gallery.map(({ preview, original, description }) =>  {
+const tegsGalleryArr = gallery.map(({ preview, original, description }, index) => {
     const liElement = document.createElement('li');
     liElement.classList.add('gallery__item');
 
@@ -21,6 +20,7 @@ const tegsGalleryArr = gallery.map(({ preview, original, description }) =>  {
     imgElement.setAttribute('src', preview)
     imgElement.setAttribute('alt', description)
     imgElement.setAttribute('data-source', original)
+    imgElement.setAttribute('data-index', index)
 
     aElement.appendChild(imgElement);
     liElement.appendChild(aElement);
@@ -36,23 +36,38 @@ lightboxOverlayRef.addEventListener('click', onCloseModal)
 
 function onOpenModal(event) {
     const image = event.target;
-
     if (image.nodeName !== 'IMG') {
         return
     }
 
     window.addEventListener('keydown', onCloceModalESC)
+    window.addEventListener('keydown', onChangeImg)
     event.preventDefault();
     lightboxRef.classList.add('is-open')
 
     lightboxImageRef.setAttribute('src', image.getAttribute('data-source'))
+    IMGindex = parseInt(event.target.getAttribute('data-index'))
+    console.log(IMGindex + 1);
+    console.log(gallery[IMGindex + 1].original);
+}
+
+function onChangeImg(event) {
+    console.log(event.code);
+    if (event.code === 'ArrowRight') {
+        IMGindex += 1;
+        lightboxImageRef.setAttribute('src', gallery[IMGindex + 1].original)
+    } else if (event.code === 'ArrowLeft') {
+        IMGindex -= 1;
+        lightboxImageRef.setAttribute('src', gallery[IMGindex + 1].original)
+    }
 }
 
 function onCloseModal() {
     lightboxImageRef.setAttribute('alt', '');
     lightboxImageRef.setAttribute('src', '');
-    lightboxRef.classList.remove('is-open')
-    window.removeEventListener('keydown', onCloceModalESC)
+    lightboxRef.classList.remove('is-open');
+    window.removeEventListener('keydown', onCloceModalESC);
+    IMGindex = 0;
 }
 
 function onCloceModalESC(event) {
