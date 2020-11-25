@@ -53,26 +53,20 @@ function onChangeImg(event) {
     if (event.code === 'ArrowRight') {
         IMGindex += 1;
 
-        if (IMGindex < gallery.length) {
-            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
-        } else if (IMGindex >= gallery.length) {
+        if (IMGindex >= gallery.length) {
             IMGindex = 0
-            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
         }
+        lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
         
     } else if (event.code === 'ArrowLeft') {
         IMGindex -= 1;
-        if (IMGindex > 0) {
-            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
-        } else if (IMGindex <= -1) {
+        if (IMGindex <= -1) {
             IMGindex = gallery.length - 1
-            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
         }
-
         lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
     }
 }
-
+    
 function onCloseModal() {
     lightboxImageRef.setAttribute('alt', '');
     lightboxImageRef.setAttribute('src', '');
