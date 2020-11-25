@@ -47,18 +47,29 @@ function onOpenModal(event) {
 
     lightboxImageRef.setAttribute('src', image.getAttribute('data-source'))
     IMGindex = parseInt(event.target.getAttribute('data-index'))
-    console.log(IMGindex + 1);
-    console.log(gallery[IMGindex + 1].original);
 }
 
 function onChangeImg(event) {
-    console.log(event.code);
     if (event.code === 'ArrowRight') {
         IMGindex += 1;
-        lightboxImageRef.setAttribute('src', gallery[IMGindex + 1].original)
+
+        if (IMGindex < gallery.length) {
+            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
+        } else if (IMGindex >= gallery.length) {
+            IMGindex = 0
+            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
+        }
+        
     } else if (event.code === 'ArrowLeft') {
         IMGindex -= 1;
-        lightboxImageRef.setAttribute('src', gallery[IMGindex + 1].original)
+        if (IMGindex > 0) {
+            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
+        } else if (IMGindex <= -1) {
+            IMGindex = gallery.length - 1
+            lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
+        }
+
+        lightboxImageRef.setAttribute('src', gallery[IMGindex].original)
     }
 }
 
